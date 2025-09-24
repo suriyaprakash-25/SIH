@@ -1,0 +1,5 @@
+[
+  {"trainId": "KMRL-TS-01", "type": "Telecom", "status": "Active", "expiryDays": 45},
+  {"trainId": "KMRL-TS-02", "type": "Signalling", "status": "Active", "expiryDays": 80},
+  {"trainId": "KMRL-TS-03", "type": "Telecom", "status": "Expired", "expiryDays": -5}
+]
