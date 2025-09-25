@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Engine, 
+  Zap, 
   Droplets, 
   FileCheck, 
   Palette, 
@@ -12,7 +12,7 @@ import {
   Clock,
   RefreshCw,
   Save,
-  Edit3
+  Edit
 } from 'lucide-react';
 
 const TrainMonitoring = () => {
@@ -26,7 +26,7 @@ const TrainMonitoring = () => {
     {
       id: 'engine',
       name: 'Engine Health',
-      icon: Engine,
+      icon: Zap,
       color: 'red',
       description: 'Motor, brakes, electrical systems'
     },
@@ -432,7 +432,7 @@ const TrainMonitoring = () => {
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >
-            {editMode ? <Save className="w-4 h-4" /> : <Edit3 className="w-4 h-4" />}
+            {editMode ? <Save className="w-4 h-4" /> : <Edit className="w-4 h-4" />}
             <span>{editMode ? 'Save Changes' : 'Edit Mode'}</span>
           </button>
         </div>

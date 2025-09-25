@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import { 
   Train, Users, Clock, AlertTriangle, TrendingUp, 
-  Activity, Battery, MapPin, Engine, Droplets, FileCheck, 
+  Activity, Battery, MapPin, Zap, Droplets, FileCheck, 
   Palette, Wrench, Gauge, CheckCircle, XCircle
 } from 'lucide-react';
 import { trainService } from '../services/api';
@@ -171,7 +171,7 @@ const Dashboard = () => {
                 <tr className="border-b border-gray-200 dark:border-gray-600">
                   <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Train ID</th>
                   <th className="text-center py-3 px-2">
-                    <Engine className="w-5 h-5 mx-auto text-red-600" title="Engine Health" />
+                    <Zap className="w-5 h-5 mx-auto text-red-600" title="Engine Health" />
                   </th>
                   <th className="text-center py-3 px-2">
                     <Droplets className="w-5 h-5 mx-auto text-blue-600" title="Cleanliness" />
