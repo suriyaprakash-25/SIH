@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../utils/ThemeContext';
+import { useAuth } from '../contexts/AuthContext';
 import {
   Home,
   Calendar,
@@ -10,21 +11,45 @@ import {
   Sun,
   Moon,
   Menu,
-  X
+  X,
+  LogOut,
+  Zap,
+  Droplets,
+  FileCheck,
+  Palette,
+  Wrench,
+  Clock
 } from 'lucide-react';
 
 const Sidebar = () => {
   const location = useLocation();
   const { darkMode, toggleDarkMode } = useTheme();
-  const [isOpen, setIsOpen] = useState(false); // ✅ Add this useState hook
+  const { user, logout, getUserPages } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
 
-  const navigation = [
-    { name: 'Dashboard', href: '/', icon: Home },
-    { name: 'Train Planning', href: '/planning', icon: Calendar },
-    { name: 'Train Monitoring', href: '/monitoring', icon: Train },
-    { name: 'Data Inputs', href: '/data-inputs', icon: Database },
-    { name: 'Simulation', href: '/simulation', icon: FlaskConical },
-  ];
+  // Get user-specific navigation based on role
+  const getNavigation = () => {
+    if (!user) return [];
+
+    const allPages = {
+      dashboard: { name: 'Dashboard', href: '/', icon: Home },
+      planning: { name: 'Train Planning', href: '/planning', icon: Calendar },
+      monitoring: { name: 'Train Monitoring', href: '/monitoring', icon: Train },
+      'data-inputs': { name: 'Data Inputs', href: '/data-inputs', icon: Database },
+      simulation: { name: 'Simulation', href: '/simulation', icon: FlaskConical },
+      engine: { name: 'Engine Health', href: '/engine', icon: Zap },
+      cleaning: { name: 'Compartment Cleaning', href: '/cleaning', icon: Droplets },
+      certification: { name: 'Fitness Certificates', href: '/certification', icon: FileCheck },
+      branding: { name: 'Branding Status', href: '/branding', icon: Palette },
+      maintenance: { name: 'Maintenance Jobs', href: '/maintenance', icon: Wrench },
+      service: { name: 'Service Intervals', href: '/service', icon: Clock }
+    };
+
+    const userPages = getUserPages();
+    return userPages.map(page => allPages[page]).filter(Boolean);
+  };
+
+  const navigation = getNavigation();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -57,14 +82,20 @@ const Sidebar = () => {
       `}>
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="flex items-center justify-center p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex items-center space-x-3">
+          <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center space-x-3 mb-3">
               <Train className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900 dark:text-white">MIP</h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Metro Planner</p>
               </div>
             </div>
+            {user && (
+              <div className="text-sm">
+                <p className="font-medium text-gray-900 dark:text-white">{user.name}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{user.role}</p>
+              </div>
+            )}
           </div>
 
           {/* Navigation */}
@@ -92,7 +123,7 @@ const Sidebar = () => {
           </nav>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
             <button
               onClick={toggleDarkMode}
               className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -109,13 +140,23 @@ const Sidebar = () => {
                 </>
               )}
             </button>
+
+            {user && (
+              <button
+                onClick={logout}
+                className="flex items-center w-full px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+              >
+                <LogOut className="w-5 h-5 mr-3" />
+                Sign Out
+              </button>
+            )}
             
             <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
               <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
                 KMRL Metro Induction Planner
               </p>
               <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-1">
-                v1.0.0
+                v2.0.0 - Role Based
               </p>
             </div>
           </div>

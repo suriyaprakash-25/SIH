@@ -1,0 +1,622 @@
+{
+  "certificates": [
+    {
+      "id": "CERT-001",
+      "trainId": "KMRL-TS-01",
+      "carId": "KMRL-MC-01A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-15",
+      "expiryDate": "2025-08-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-15",
+        "lastInspectionScore": 95
+      }
+    },
+    {
+      "id": "CERT-002",
+      "trainId": "KMRL-TS-01",
+      "carId": "KMRL-TC-01B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-15",
+      "expiryDate": "2025-08-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-15",
+        "lastInspectionScore": 92
+      }
+    },
+    {
+      "id": "CERT-003",
+      "trainId": "KMRL-TS-01",
+      "carId": "KMRL-TC-01C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-15",
+      "expiryDate": "2025-08-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-15",
+        "lastInspectionScore": 94
+      }
+    },
+    {
+      "id": "CERT-004",
+      "trainId": "KMRL-TS-01",
+      "carId": "KMRL-MC-01D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-15",
+      "expiryDate": "2025-08-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-15",
+        "lastInspectionScore": 96
+      }
+    },
+    {
+      "id": "CERT-005",
+      "trainId": "KMRL-TS-02",
+      "carId": "KMRL-MC-02A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-20",
+      "expiryDate": "2025-07-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-20",
+        "lastInspectionScore": 88
+      }
+    },
+    {
+      "id": "CERT-006",
+      "trainId": "KMRL-TS-02",
+      "carId": "KMRL-TC-02B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-20",
+      "expiryDate": "2025-07-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-20",
+        "lastInspectionScore": 90
+      }
+    },
+    {
+      "id": "CERT-007",
+      "trainId": "KMRL-TS-02",
+      "carId": "KMRL-TC-02C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-20",
+      "expiryDate": "2025-07-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-20",
+        "lastInspectionScore": 87
+      }
+    },
+    {
+      "id": "CERT-008",
+      "trainId": "KMRL-TS-02",
+      "carId": "KMRL-MC-02D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-20",
+      "expiryDate": "2025-07-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-20",
+        "lastInspectionScore": 89
+      }
+    },
+    {
+      "id": "CERT-009",
+      "trainId": "KMRL-TS-03",
+      "carId": "KMRL-MC-03A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-06-10",
+      "expiryDate": "2025-06-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expired",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-12-10",
+        "lastInspectionScore": 75
+      }
+    },
+    {
+      "id": "CERT-010",
+      "trainId": "KMRL-TS-03",
+      "carId": "KMRL-TC-03B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-06-10",
+      "expiryDate": "2025-06-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expired",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-12-10",
+        "lastInspectionScore": 78
+      }
+    },
+    {
+      "id": "CERT-011",
+      "trainId": "KMRL-TS-03",
+      "carId": "KMRL-TC-03C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-06-10",
+      "expiryDate": "2025-06-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expired",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-12-10",
+        "lastInspectionScore": 72
+      }
+    },
+    {
+      "id": "CERT-012",
+      "trainId": "KMRL-TS-03",
+      "carId": "KMRL-MC-03D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-06-10",
+      "expiryDate": "2025-06-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expired",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-12-10",
+        "lastInspectionScore": 76
+      }
+    },
+    {
+      "id": "CERT-013",
+      "trainId": "KMRL-TS-04",
+      "carId": "KMRL-MC-04A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-09-05",
+      "expiryDate": "2025-09-05",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Sunita Nair",
+        "inspectorId": "INSP-004",
+        "nextInspectionDue": "2025-03-05",
+        "lastInspectionScore": 93
+      }
+    },
+    {
+      "id": "CERT-014",
+      "trainId": "KMRL-TS-04",
+      "carId": "KMRL-TC-04B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-09-05",
+      "expiryDate": "2025-09-05",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Sunita Nair",
+        "inspectorId": "INSP-004",
+        "nextInspectionDue": "2025-03-05",
+        "lastInspectionScore": 91
+      }
+    },
+    {
+      "id": "CERT-015",
+      "trainId": "KMRL-TS-04",
+      "carId": "KMRL-TC-04C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-09-05",
+      "expiryDate": "2025-09-05",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Sunita Nair",
+        "inspectorId": "INSP-004",
+        "nextInspectionDue": "2025-03-05",
+        "lastInspectionScore": 89
+      }
+    },
+    {
+      "id": "CERT-016",
+      "trainId": "KMRL-TS-04",
+      "carId": "KMRL-MC-04D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-09-05",
+      "expiryDate": "2025-09-05",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Sunita Nair",
+        "inspectorId": "INSP-004",
+        "nextInspectionDue": "2025-03-05",
+        "lastInspectionScore": 94
+      }
+    },
+    {
+      "id": "CERT-017",
+      "trainId": "KMRL-TS-05",
+      "carId": "KMRL-MC-05A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-05-15",
+      "expiryDate": "2025-05-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Vishnu Pillai",
+        "inspectorId": "INSP-005",
+        "nextInspectionDue": "2024-11-15",
+        "lastInspectionScore": 85
+      }
+    },
+    {
+      "id": "CERT-018",
+      "trainId": "KMRL-TS-05",
+      "carId": "KMRL-TC-05B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-05-15",
+      "expiryDate": "2025-05-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Vishnu Pillai",
+        "inspectorId": "INSP-005",
+        "nextInspectionDue": "2024-11-15",
+        "lastInspectionScore": 83
+      }
+    },
+    {
+      "id": "CERT-019",
+      "trainId": "KMRL-TS-05",
+      "carId": "KMRL-TC-05C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-05-15",
+      "expiryDate": "2025-05-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Vishnu Pillai",
+        "inspectorId": "INSP-005",
+        "nextInspectionDue": "2024-11-15",
+        "lastInspectionScore": 87
+      }
+    },
+    {
+      "id": "CERT-020",
+      "trainId": "KMRL-TS-05",
+      "carId": "KMRL-MC-05D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-05-15",
+      "expiryDate": "2025-05-15",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Vishnu Pillai",
+        "inspectorId": "INSP-005",
+        "nextInspectionDue": "2024-11-15",
+        "lastInspectionScore": 86
+      }
+    },
+    {
+      "id": "CERT-021",
+      "trainId": "KMRL-TS-06",
+      "carId": "KMRL-MC-06A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-25",
+      "expiryDate": "2025-08-25",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-25",
+        "lastInspectionScore": 91
+      }
+    },
+    {
+      "id": "CERT-022",
+      "trainId": "KMRL-TS-06",
+      "carId": "KMRL-TC-06B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-25",
+      "expiryDate": "2025-08-25",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-25",
+        "lastInspectionScore": 88
+      }
+    },
+    {
+      "id": "CERT-023",
+      "trainId": "KMRL-TS-06",
+      "carId": "KMRL-TC-06C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-25",
+      "expiryDate": "2025-08-25",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-25",
+        "lastInspectionScore": 90
+      }
+    },
+    {
+      "id": "CERT-024",
+      "trainId": "KMRL-TS-06",
+      "carId": "KMRL-MC-06D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-08-25",
+      "expiryDate": "2025-08-25",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Dr. Rajesh Kumar",
+        "inspectorId": "INSP-001",
+        "nextInspectionDue": "2025-02-25",
+        "lastInspectionScore": 89
+      }
+    },
+    {
+      "id": "CERT-025",
+      "trainId": "KMRL-TS-07",
+      "carId": "KMRL-MC-07A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-10",
+      "expiryDate": "2025-07-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-10",
+        "lastInspectionScore": 87
+      }
+    },
+    {
+      "id": "CERT-026",
+      "trainId": "KMRL-TS-07",
+      "carId": "KMRL-TC-07B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-10",
+      "expiryDate": "2025-07-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-10",
+        "lastInspectionScore": 85
+      }
+    },
+    {
+      "id": "CERT-027",
+      "trainId": "KMRL-TS-07",
+      "carId": "KMRL-TC-07C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-10",
+      "expiryDate": "2025-07-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-10",
+        "lastInspectionScore": 86
+      }
+    },
+    {
+      "id": "CERT-028",
+      "trainId": "KMRL-TS-07",
+      "carId": "KMRL-MC-07D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-07-10",
+      "expiryDate": "2025-07-10",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Valid",
+      "inspectionDetails": {
+        "inspector": "Ms. Priya Sharma",
+        "inspectorId": "INSP-002",
+        "nextInspectionDue": "2025-01-10",
+        "lastInspectionScore": 88
+      }
+    },
+    {
+      "id": "CERT-029",
+      "trainId": "KMRL-TS-08",
+      "carId": "KMRL-MC-08A",
+      "carType": "Motor Car",
+      "position": "Front Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-04-20",
+      "expiryDate": "2025-04-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-10-20",
+        "lastInspectionScore": 82
+      }
+    },
+    {
+      "id": "CERT-030",
+      "trainId": "KMRL-TS-08",
+      "carId": "KMRL-TC-08B",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 1",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-04-20",
+      "expiryDate": "2025-04-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-10-20",
+        "lastInspectionScore": 80
+      }
+    },
+    {
+      "id": "CERT-031",
+      "trainId": "KMRL-TS-08",
+      "carId": "KMRL-TC-08C",
+      "carType": "Trailer Car",
+      "position": "Passenger Car 2",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-04-20",
+      "expiryDate": "2025-04-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-10-20",
+        "lastInspectionScore": 81
+      }
+    },
+    {
+      "id": "CERT-032",
+      "trainId": "KMRL-TS-08",
+      "carId": "KMRL-MC-08D",
+      "carType": "Motor Car",
+      "position": "Rear Motor",
+      "certificateType": "Fitness Certificate",
+      "issueDate": "2024-04-20",
+      "expiryDate": "2025-04-20",
+      "issuedBy": "KMRL Safety Department",
+      "status": "Expiring Soon",
+      "inspectionDetails": {
+        "inspector": "Mr. Anil Kumar",
+        "inspectorId": "INSP-003",
+        "nextInspectionDue": "2024-10-20",
+        "lastInspectionScore": 83
+      }
+    }
+  ],
+  "inspectors": [
+    {
+      "inspectorId": "INSP-001",
+      "name": "Dr. Rajesh Kumar",
+      "designation": "Senior Safety Inspector",
+      "certification": "Level-A Safety Inspector",
+      "experience": "15 years",
+      "contactEmail": "rajesh.kumar@kmrl.in"
+    },
+    {
+      "inspectorId": "INSP-002",
+      "name": "Ms. Priya Sharma",
+      "designation": "Safety Inspector",
+      "certification": "Level-B Safety Inspector",
+      "experience": "8 years",
+      "contactEmail": "priya.sharma@kmrl.in"
+    },
+    {
+      "inspectorId": "INSP-003",
+      "name": "Mr. Anil Kumar",
+      "designation": "Safety Inspector",
+      "certification": "Level-B Safety Inspector",
+      "experience": "12 years",
+      "contactEmail": "anil.kumar@kmrl.in"
+    },
+    {
+      "inspectorId": "INSP-004",
+      "name": "Dr. Sunita Nair",
+      "designation": "Chief Safety Inspector",
+      "certification": "Level-A Safety Inspector",
+      "experience": "20 years",
+      "contactEmail": "sunita.nair@kmrl.in"
+    },
+    {
+      "inspectorId": "INSP-005",
+      "name": "Mr. Vishnu Pillai",
+      "designation": "Safety Inspector",
+      "certification": "Level-B Safety Inspector",
+      "experience": "10 years",
+      "contactEmail": "vishnu.pillai@kmrl.in"
+    }
+  ]
+}

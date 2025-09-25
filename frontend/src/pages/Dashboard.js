@@ -113,12 +113,23 @@ const Dashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">Metro fleet overview and performance metrics</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Monitoring Dashboard</h1>
+          <div className="mt-2">
+            <p className="text-gray-600 dark:text-gray-400">Real-time fleet overview and performance metrics</p>
+            <div className="flex items-center space-x-2 mt-2">
+              <div className="flex items-center space-x-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm">
+                <Activity className="w-4 h-4" />
+                <span>READ-ONLY MONITORING</span>
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Use role-specific pages to edit factor data
+              </div>
+            </div>
+          </div>
         </div>
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-            <Activity className="w-4 h-4" />
+            <Clock className="w-4 h-4" />
             <span>Last updated: {new Date().toLocaleTimeString()}</span>
           </div>
         </div>
@@ -156,9 +167,40 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* 6-Factor Availability Matrix */}
+      {/* 6-Factor Summary Cards */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Fleet Availability Matrix - 6 Critical Factors</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">6 Critical Factors Summary</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          {[
+            { name: 'Engine Health', icon: Zap, color: 'red', good: fleetData.filter(t => t.score > 80).length, total: fleetData.length },
+            { name: 'Cleanliness', icon: Droplets, color: 'blue', good: fleetData.filter(t => t.cleaningStatus === 'Clean').length, total: fleetData.length },
+            { name: 'Certificates', icon: FileCheck, color: 'green', good: fleetData.filter(t => t.fitnessStatus === 'Valid').length, total: fleetData.length },
+            { name: 'Branding', icon: Palette, color: 'purple', good: fleetData.filter(t => t.branding?.category === 'Branded').length, total: fleetData.length },
+            { name: 'Maintenance', icon: Wrench, color: 'orange', good: fleetData.filter(t => t.jobCard?.status === 'Closed').length, total: fleetData.length },
+            { name: 'Service', icon: Gauge, color: 'indigo', good: fleetData.filter(t => t.mileage < 100000).length, total: fleetData.length }
+          ].map((factor, index) => {
+            const percentage = factor.total > 0 ? Math.round((factor.good / factor.total) * 100) : 0;
+            return (
+              <div key={index} className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <factor.icon className={`w-8 h-8 mx-auto mb-2 text-${factor.color}-600`} />
+                <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">{factor.name}</h4>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">{percentage}%</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{factor.good}/{factor.total} trains</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 6-Factor Availability Matrix - READ ONLY MONITORING */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Fleet Availability Matrix - 6 Critical Factors</h3>
+          <div className="flex items-center space-x-2 text-sm text-gray-500 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full">
+            <Activity className="w-4 h-4" />
+            <span>VIEW ONLY</span>
+          </div>
+        </div>
         
         {loading ? (
           <div className="flex justify-center py-8">
@@ -171,24 +213,42 @@ const Dashboard = () => {
                 <tr className="border-b border-gray-200 dark:border-gray-600">
                   <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Train ID</th>
                   <th className="text-center py-3 px-2">
-                    <Zap className="w-5 h-5 mx-auto text-red-600" title="Engine Health" />
+                    <div className="flex flex-col items-center">
+                      <Zap className="w-5 h-5 text-red-600" title="Engine Health" />
+                      <span className="text-xs text-gray-500 mt-1">Engine</span>
+                    </div>
                   </th>
                   <th className="text-center py-3 px-2">
-                    <Droplets className="w-5 h-5 mx-auto text-blue-600" title="Cleanliness" />
+                    <div className="flex flex-col items-center">
+                      <Droplets className="w-5 h-5 text-blue-600" title="Cleanliness" />
+                      <span className="text-xs text-gray-500 mt-1">Clean</span>
+                    </div>
                   </th>
                   <th className="text-center py-3 px-2">
-                    <FileCheck className="w-5 h-5 mx-auto text-green-600" title="Certificates" />
+                    <div className="flex flex-col items-center">
+                      <FileCheck className="w-5 h-5 text-green-600" title="Certificates" />
+                      <span className="text-xs text-gray-500 mt-1">Cert</span>
+                    </div>
                   </th>
                   <th className="text-center py-3 px-2">
-                    <Palette className="w-5 h-5 mx-auto text-purple-600" title="Branding" />
+                    <div className="flex flex-col items-center">
+                      <Palette className="w-5 h-5 text-purple-600" title="Branding" />
+                      <span className="text-xs text-gray-500 mt-1">Brand</span>
+                    </div>
                   </th>
                   <th className="text-center py-3 px-2">
-                    <Wrench className="w-5 h-5 mx-auto text-orange-600" title="Maintenance" />
+                    <div className="flex flex-col items-center">
+                      <Wrench className="w-5 h-5 text-orange-600" title="Maintenance" />
+                      <span className="text-xs text-gray-500 mt-1">Maint</span>
+                    </div>
                   </th>
                   <th className="text-center py-3 px-2">
-                    <Gauge className="w-5 h-5 mx-auto text-indigo-600" title="Service Interval" />
+                    <div className="flex flex-col items-center">
+                      <Gauge className="w-5 h-5 text-indigo-600" title="Service Interval" />
+                      <span className="text-xs text-gray-500 mt-1">Service</span>
+                    </div>
                   </th>
-                  <th className="text-center py-3 px-4 font-medium text-gray-900 dark:text-white">Status</th>
+                  <th className="text-center py-3 px-4 font-medium text-gray-900 dark:text-white">Overall Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,30 +269,32 @@ const Dashboard = () => {
                     : 'good';
                   
                   return (
-                    <tr key={train.id || index} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                      <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">{train.trainId}</td>
+                    <tr key={train.id || index} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                      <td className="py-4 px-4 font-bold text-gray-900 dark:text-white">{train.trainId}</td>
                       {Object.entries(factorStatuses).map(([factor, status]) => (
-                        <td key={factor} className="text-center py-3 px-2">
-                          {status === 'good' ? (
-                            <CheckCircle className="w-5 h-5 mx-auto text-green-500" />
-                          ) : status === 'warning' ? (
-                            <AlertTriangle className="w-5 h-5 mx-auto text-yellow-500" />
-                          ) : status === 'critical' ? (
-                            <XCircle className="w-5 h-5 mx-auto text-red-500" />
-                          ) : (
-                            <div className="w-5 h-5 mx-auto rounded-full bg-gray-300"></div>
-                          )}
+                        <td key={factor} className="text-center py-4 px-2">
+                          <div className="flex justify-center">
+                            {status === 'good' ? (
+                              <CheckCircle className="w-6 h-6 text-green-500" title="Good Status" />
+                            ) : status === 'warning' ? (
+                              <AlertTriangle className="w-6 h-6 text-yellow-500" title="Needs Attention" />
+                            ) : status === 'critical' ? (
+                              <XCircle className="w-6 h-6 text-red-500" title="Critical Issue" />
+                            ) : (
+                              <div className="w-6 h-6 rounded-full bg-gray-300 dark:bg-gray-600" title="No Data"></div>
+                            )}
+                          </div>
                         </td>
                       ))}
-                      <td className="text-center py-3 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      <td className="text-center py-4 px-4">
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-bold ${
                           overallStatus === 'good' 
-                            ? 'bg-green-100 text-green-800' 
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
                             : overallStatus === 'warning'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-red-100 text-red-800'
+                            ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
                         }`}>
-                          {overallStatus === 'good' ? 'AVAILABLE' : overallStatus === 'warning' ? 'LIMITED' : 'UNAVAILABLE'}
+                          {overallStatus === 'good' ? '✓ AVAILABLE' : overallStatus === 'warning' ? '⚠ LIMITED' : '✗ UNAVAILABLE'}
                         </span>
                       </td>
                     </tr>
@@ -243,18 +305,26 @@ const Dashboard = () => {
           </div>
         )}
         
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
-          <div className="flex items-center space-x-2">
-            <CheckCircle className="w-4 h-4 text-green-500" />
-            <span>Good</span>
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-3">Status Legend</h4>
+          <div className="flex flex-wrap gap-6 text-sm">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-gray-700 dark:text-gray-300">Good - Ready for service</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="w-5 h-5 text-yellow-500" />
+              <span className="text-gray-700 dark:text-gray-300">Warning - Needs attention</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <XCircle className="w-5 h-5 text-red-500" />
+              <span className="text-gray-700 dark:text-gray-300">Critical - Service required</span>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <AlertTriangle className="w-4 h-4 text-yellow-500" />
-            <span>Warning</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <XCircle className="w-4 h-4 text-red-500" />
-            <span>Critical</span>
+          <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded">
+            <p className="text-sm text-blue-800 dark:text-blue-200">
+              <strong>Note:</strong> This dashboard provides read-only monitoring. To update factor data, please use the dedicated role-specific pages accessible through the sidebar navigation.
+            </p>
           </div>
         </div>
       </div>
