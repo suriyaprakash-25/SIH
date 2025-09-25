@@ -1,0 +1,7 @@
+[
+  {"trainId": "KMRL-TS-01", "mileage": 75000, "bayPosition": "STL-01", "lastCleanedDaysAgo": 2},
+  {"trainId": "KMRL-TS-02", "mileage": 120500, "bayPosition": "STL-02", "lastCleanedDaysAgo": 5},
+  {"trainId": "KMRL-TS-03", "mileage": 98000, "bayPosition": "IBL-01", "lastCleanedDaysAgo": 1},
+  {"trainId": "KMRL-TS-04", "mileage": 45000, "bayPosition": "STL-03", "lastCleanedDaysAgo": 12},
+  {"trainId": "KMRL-TS-05", "mileage": 145000, "bayPosition": "IBL-02", "lastCleanedDaysAgo": 3}
+]

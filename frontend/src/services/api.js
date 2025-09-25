@@ -20,8 +20,8 @@ class APIService {
     } catch (error) {
       console.error('API request failed:', error);
       // For development, return mock data instead of throwing
-      if (endpoint.includes('/trains') && !options.method) {
-        return getMockTrains();
+      if ((endpoint.includes('/trains') || endpoint.includes('/fleet')) && !options.method) {
+        return { data: getMockTrains(), success: true };
       }
       throw error;
     }
@@ -428,7 +428,17 @@ function generateReasoning(train, assignment) {
 export const trainService = {
   async getTrains() {
     try {
-      return await apiService.get('/trains');
+      console.log('🔄 Fetching trains from multi-source data system...');
+      const response = await apiService.get('/fleet');
+      
+      // Handle new API response format
+      if (response.success && response.data) {
+        console.log(`✅ Loaded ${response.data.length} trains from backend`);
+        return response.data;
+      } else {
+        // Fallback to legacy format
+        return response;
+      }
     } catch (error) {
       console.warn('Backend not available, using mock data');
       return getMockTrains();
@@ -442,6 +452,26 @@ export const trainService = {
       console.warn('Backend not available');
       const trains = getMockTrains();
       return trains.find(t => t.trainId === trainId) || null;
+    }
+  },
+
+  async getFleetStatistics() {
+    try {
+      const response = await apiService.get('/fleet/statistics');
+      if (response.success && response.data) {
+        return response.data;
+      }
+      return response;
+    } catch (error) {
+      console.warn('Backend statistics not available');
+      // Generate mock statistics
+      const trains = getMockTrains();
+      return {
+        totalTrains: trains.length,
+        readyTrains: trains.filter(t => t.fitnessStatus === 'Valid').length,
+        maintenanceNeeded: trains.filter(t => t.jobCardStatus === 'Open').length,
+        averageScore: 85
+      };
     }
   },
 

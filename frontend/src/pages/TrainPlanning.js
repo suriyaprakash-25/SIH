@@ -50,11 +50,11 @@ const TrainPlanning = () => {
         (filters.fitnessStatus === 'expired' && train.fitnessStatus === 'Expired');
       
       const matchesJobCard = filters.jobCardStatus === 'all' || 
-        (filters.jobCardStatus === 'closed' && train.jobCardStatus === 'Closed') ||
-        (filters.jobCardStatus === 'open' && train.jobCardStatus === 'Open');
+        (filters.jobCardStatus === 'closed' && (train.jobCard?.status === 'Closed' || train.jobCardStatus === 'Closed')) ||
+        (filters.jobCardStatus === 'open' && (train.jobCard?.status === 'Open' || train.jobCardStatus === 'Open'));
       
       const matchesBranding = filters.brandingCategory === 'all' || 
-        train.brandingCategory === filters.brandingCategory;
+        (train.branding?.category === filters.brandingCategory || train.brandingCategory === filters.brandingCategory);
       
       const matchesSearch = filters.searchTerm === '' || 
         train.trainId.toLowerCase().includes(filters.searchTerm.toLowerCase());
