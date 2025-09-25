@@ -1,117 +1,123 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Train, 
-  Database, 
-  PlayCircle, 
-  Menu, 
-  X, 
-  Sun, 
-  Moon,
-  Settings
-} from 'lucide-react';
 import { useTheme } from '../utils/ThemeContext';
+import {
+  Home,
+  Calendar,
+  Database,
+  FlaskConical,
+  Train,
+  Sun,
+  Moon,
+  Menu,
+  X
+} from 'lucide-react';
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = () => {
   const location = useLocation();
   const { darkMode, toggleDarkMode } = useTheme();
+  const [isOpen, setIsOpen] = useState(false); // ✅ Add this useState hook
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Train Planning', href: '/planning', icon: Train },
+    { name: 'Dashboard', href: '/', icon: Home },
+    { name: 'Train Planning', href: '/planning', icon: Calendar },
+    { name: 'Train Monitoring', href: '/monitoring', icon: Train },
     { name: 'Data Inputs', href: '/data-inputs', icon: Database },
-    { name: 'Simulation', href: '/simulation', icon: PlayCircle },
+    { name: 'Simulation', href: '/simulation', icon: FlaskConical },
   ];
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <>
-      {/* Mobile backdrop */}
+      {/* Mobile menu button */}
+      <div className="lg:hidden fixed top-0 left-0 z-50 p-4">
+        <button
+          onClick={toggleSidebar}
+          className="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
+
+      {/* Backdrop for mobile */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 z-40 lg:hidden bg-gray-600 bg-opacity-75"
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out ${
-        isOpen ? 'translate-x-0' : '-translate-x-48'
-      }`}>
-        
-        {/* Header */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <Train className="h-8 w-8 text-metro-blue" />
-            </div>
-            <div className={`ml-3 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                KMRL MIP
-              </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Metro Induction Planner
-              </p>
+      <div className={`
+        fixed top-0 left-0 z-40 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out
+        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-center p-6 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center space-x-3">
+              <Train className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">MIP</h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Metro Planner</p>
+              </div>
             </div>
           </div>
-          
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-1 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
 
-        {/* Navigation */}
-        <nav className="mt-8 px-4">
-          <ul className="space-y-2">
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
               return (
-                <li key={item.name}>
-                  <Link
-                    to={item.href}
-                    className={`group flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                      isActive
-                        ? 'bg-metro-blue text-white'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <item.icon
-                      className={`mr-3 h-5 w-5 flex-shrink-0 ${
-                        isActive 
-                          ? 'text-white' 
-                          : 'text-gray-400 group-hover:text-gray-500 dark:text-gray-400 dark:group-hover:text-gray-300'
-                      }`}
-                    />
-                    <span className={`transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-                      {item.name}
-                    </span>
-                  </Link>
-                </li>
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsOpen(false)} // Close mobile menu on navigation
+                  className={`
+                    flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors duration-200
+                    ${isActive
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }
+                  `}
+                >
+                  <item.icon className="w-5 h-5 mr-3" />
+                  {item.name}
+                </Link>
               );
             })}
-          </ul>
-        </nav>
+          </nav>
 
-        {/* Bottom actions */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
+          {/* Footer */}
+          <div className="p-4 border-t border-gray-200 dark:border-gray-700">
             <button
               onClick={toggleDarkMode}
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-              title="Toggle theme"
+              className="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
             >
-              {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {darkMode ? (
+                <>
+                  <Sun className="w-5 h-5 mr-3" />
+                  Light Mode
+                </>
+              ) : (
+                <>
+                  <Moon className="w-5 h-5 mr-3" />
+                  Dark Mode
+                </>
+              )}
             </button>
             
-            <button
-              className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-              title="Settings"
-            >
-              <Settings className="h-5 w-5" />
-            </button>
+            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                KMRL Metro Induction Planner
+              </p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-1">
+                v1.0.0
+              </p>
+            </div>
           </div>
         </div>
       </div>
