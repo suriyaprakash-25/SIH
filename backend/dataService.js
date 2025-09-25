@@ -85,7 +85,7 @@ class DataService {
         priority = 'Medium';
       }
 
-      // Return unified train object
+      // Return unified train object with detailed factor breakdown
       return {
         id: train.trainId,
         trainId: train.trainId,
@@ -111,7 +111,41 @@ class DataService {
         priority,
         // Additional computed fields for dashboard
         score: this.calculateTrainScore(train, certificate, jobCard, brandingInfo),
-        recommendation: this.getRecommendation(train, certificate, jobCard, brandingInfo, cleaningStatus)
+        recommendation: this.getRecommendation(train, certificate, jobCard, brandingInfo, cleaningStatus),
+        
+        // 6-Factor Availability Breakdown
+        availabilityFactors: {
+          engine: {
+            status: this.getEngineStatus(train, certificate),
+            details: `Mileage: ${train.mileage}km, Fitness: ${certificate.status}`
+          },
+          cleaning: {
+            status: cleaningStatus === 'Clean' ? 'good' : 'warning',
+            details: `Last cleaned: ${train.lastCleanedDaysAgo} days ago`
+          },
+          certificates: {
+            status: certificate.status === 'Active' && certificate.expiryDays > 0 ? 'good' : 'critical',
+            details: `${certificate.type} cert, expires in ${certificate.expiryDays} days`
+          },
+          branding: {
+            status: brandingInfo.slaCompliance >= 100 ? 'good' : brandingInfo.slaCompliance >= 90 ? 'warning' : 'critical',
+            details: `${brandingInfo.advertiser}, SLA: ${brandingInfo.slaCompliance}%`
+          },
+          maintenance: {
+            status: jobCard.status === 'Closed' ? 'good' : 'critical',
+            details: jobCard.details
+          },
+          serviceInterval: {
+            status: train.mileage < 100000 ? 'good' : train.mileage < 120000 ? 'warning' : 'critical',
+            details: `${train.mileage}km total mileage`
+          }
+        },
+        
+        // Overall availability determination
+        isAvailableForService: certificate.status === 'Active' && 
+                              jobCard.status === 'Closed' && 
+                              cleaningStatus === 'Clean' &&
+                              certificate.expiryDays > 0
       };
     });
 
@@ -157,6 +191,16 @@ class DataService {
     }
 
     return Math.max(0, Math.min(100, score));
+  }
+
+  /**
+   * Get engine health status based on multiple factors
+   */
+  getEngineStatus(train, certificate) {
+    if (certificate.status === 'Expired') return 'critical';
+    if (train.mileage > 120000) return 'warning';
+    if (train.mileage > 100000) return 'warning';
+    return 'good';
   }
 
   /**

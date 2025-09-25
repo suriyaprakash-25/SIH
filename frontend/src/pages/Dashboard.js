@@ -1,30 +1,73 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import { 
   Train, Users, Clock, AlertTriangle, TrendingUp, 
-  Activity, Battery, MapPin
+  Activity, Battery, MapPin, Engine, Droplets, FileCheck, 
+  Palette, Wrench, Gauge, CheckCircle, XCircle
 } from 'lucide-react';
+import { trainService } from '../services/api';
 
 const Dashboard = () => {
-  // Static KPI data for demo
-  const kpiData = {
+  const [fleetData, setFleetData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Dynamic KPI data based on real fleet status
+  const [kpiData, setKpiData] = useState({
     totalTrains: 5,
-    inService: 3,
-    standby: 1,
-    maintenance: 1,
+    availableTrains: 3,
+    unavailableTrains: 2,
+    criticalIssues: 1,
     punctuality: 94.2,
     brandingExposure: 87.5,
     avgMileage: 96700
+  });
+
+  useEffect(() => {
+    loadFleetData();
+  }, []);
+
+  const loadFleetData = async () => {
+    try {
+      const data = await trainService.getTrains();
+      setFleetData(data);
+      calculateAvailabilityKPIs(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error loading fleet data:', error);
+      setLoading(false);
+    }
   };
 
-  // Static allocation data
-  const allocationData = [
-    { name: 'In Service', value: 3, color: '#10B981' },
-    { name: 'Standby', value: 1, color: '#F59E0B' },
-    { name: 'Maintenance', value: 1, color: '#EF4444' }
+  const calculateAvailabilityKPIs = (trains) => {
+    const availableTrains = trains.filter(train => 
+      train.fitnessStatus === 'Valid' && 
+      train.jobCard?.status === 'Closed' &&
+      train.cleaningStatus === 'Clean'
+    ).length;
+    
+    const criticalIssues = trains.filter(train =>
+      train.fitnessStatus === 'Expired' ||
+      train.jobCard?.status === 'Open' ||
+      train.score < 60
+    ).length;
+
+    setKpiData(prev => ({
+      ...prev,
+      totalTrains: trains.length,
+      availableTrains,
+      unavailableTrains: trains.length - availableTrains,
+      criticalIssues
+    }));
+  };
+
+  // Dynamic allocation data based on availability
+  const getAllocationData = () => [
+    { name: 'Available', value: kpiData.availableTrains, color: '#10B981' },
+    { name: 'Limited', value: Math.max(0, kpiData.totalTrains - kpiData.availableTrains - kpiData.criticalIssues), color: '#F59E0B' },
+    { name: 'Unavailable', value: kpiData.criticalIssues, color: '#EF4444' }
   ];
 
   // Static weekly performance data
@@ -91,11 +134,18 @@ const Dashboard = () => {
           color="blue"
         />
         <KPICard
-          title="In Service"
-          value={kpiData.inService}
-          icon={Users}
-          trend="+1 from yesterday"
+          title="Available"
+          value={kpiData.availableTrains}
+          icon={CheckCircle}
+          trend={`${kpiData.unavailableTrains} unavailable`}
           color="green"
+        />
+        <KPICard
+          title="Critical Issues"
+          value={kpiData.criticalIssues}
+          icon={AlertTriangle}
+          trend="Requires attention"
+          color="red"
         />
         <KPICard
           title="Punctuality"
@@ -104,13 +154,109 @@ const Dashboard = () => {
           trend="+2.1% from last week"
           color="purple"
         />
-        <KPICard
-          title="Avg. Mileage"
-          value={`${(kpiData.avgMileage / 1000).toFixed(0)}K km`}
-          icon={MapPin}
-          trend="+5K from last month"
-          color="orange"
-        />
+      </div>
+
+      {/* 6-Factor Availability Matrix */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Fleet Availability Matrix - 6 Critical Factors</h3>
+        
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-gray-200 dark:border-gray-600">
+                  <th className="text-left py-3 px-4 font-medium text-gray-900 dark:text-white">Train ID</th>
+                  <th className="text-center py-3 px-2">
+                    <Engine className="w-5 h-5 mx-auto text-red-600" title="Engine Health" />
+                  </th>
+                  <th className="text-center py-3 px-2">
+                    <Droplets className="w-5 h-5 mx-auto text-blue-600" title="Cleanliness" />
+                  </th>
+                  <th className="text-center py-3 px-2">
+                    <FileCheck className="w-5 h-5 mx-auto text-green-600" title="Certificates" />
+                  </th>
+                  <th className="text-center py-3 px-2">
+                    <Palette className="w-5 h-5 mx-auto text-purple-600" title="Branding" />
+                  </th>
+                  <th className="text-center py-3 px-2">
+                    <Wrench className="w-5 h-5 mx-auto text-orange-600" title="Maintenance" />
+                  </th>
+                  <th className="text-center py-3 px-2">
+                    <Gauge className="w-5 h-5 mx-auto text-indigo-600" title="Service Interval" />
+                  </th>
+                  <th className="text-center py-3 px-4 font-medium text-gray-900 dark:text-white">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fleetData.map((train, index) => {
+                  const factorStatuses = {
+                    engine: train.score > 80 ? 'good' : train.score > 60 ? 'warning' : 'critical',
+                    cleaning: train.cleaningStatus === 'Clean' ? 'good' : 'warning',
+                    certificates: train.fitnessStatus === 'Valid' ? 'good' : 'critical',
+                    branding: train.branding?.category === 'Branded' ? 'good' : 'neutral',
+                    maintenance: train.jobCard?.status === 'Closed' ? 'good' : 'critical',
+                    mileage: train.mileage < 100000 ? 'good' : 'warning'
+                  };
+                  
+                  const overallStatus = Object.values(factorStatuses).includes('critical') 
+                    ? 'critical' 
+                    : Object.values(factorStatuses).includes('warning') 
+                    ? 'warning' 
+                    : 'good';
+                  
+                  return (
+                    <tr key={train.id || index} className="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                      <td className="py-3 px-4 font-medium text-gray-900 dark:text-white">{train.trainId}</td>
+                      {Object.entries(factorStatuses).map(([factor, status]) => (
+                        <td key={factor} className="text-center py-3 px-2">
+                          {status === 'good' ? (
+                            <CheckCircle className="w-5 h-5 mx-auto text-green-500" />
+                          ) : status === 'warning' ? (
+                            <AlertTriangle className="w-5 h-5 mx-auto text-yellow-500" />
+                          ) : status === 'critical' ? (
+                            <XCircle className="w-5 h-5 mx-auto text-red-500" />
+                          ) : (
+                            <div className="w-5 h-5 mx-auto rounded-full bg-gray-300"></div>
+                          )}
+                        </td>
+                      ))}
+                      <td className="text-center py-3 px-4">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          overallStatus === 'good' 
+                            ? 'bg-green-100 text-green-800' 
+                            : overallStatus === 'warning'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {overallStatus === 'good' ? 'AVAILABLE' : overallStatus === 'warning' ? 'LIMITED' : 'UNAVAILABLE'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+        
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center space-x-2">
+            <CheckCircle className="w-4 h-4 text-green-500" />
+            <span>Good</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <AlertTriangle className="w-4 h-4 text-yellow-500" />
+            <span>Warning</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <XCircle className="w-4 h-4 text-red-500" />
+            <span>Critical</span>
+          </div>
+        </div>
       </div>
 
       {/* Charts Row */}
@@ -121,14 +267,14 @@ const Dashboard = () => {
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
-                data={allocationData}
+                data={getAllocationData()}
                 cx="50%"
                 cy="50%"
                 outerRadius={80}
                 dataKey="value"
                 label={({ name, value }) => `${name}: ${value}`}
               >
-                {allocationData.map((entry, index) => (
+                {getAllocationData().map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
