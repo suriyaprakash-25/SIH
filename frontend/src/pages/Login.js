@@ -21,7 +21,7 @@ const Login = () => {
     'Job Card Status': { email: 'jobcard@kmrl.com', password: 'jobcard123' },
     'Branding Priorities': { email: 'branding@kmrl.com', password: 'branding123' },
     'Mileage Monitoring': { email: 'mileage@kmrl.com', password: 'mileage123' },
-    'Cleaning Slots': { email: 'cleaning@kmrl.com', password: 'cleaning123' },
+    'Communication Management': { email: 'communication@kmrl.com', password: 'communication123' },
     'Stabling Positions': { email: 'stabling@kmrl.com', password: 'stabling123' },
     'Cleaning & Maintenance': { email: 'maintenance@kmrl.com', password: 'maintenance123' }
   };
@@ -32,7 +32,7 @@ const Login = () => {
     'Job Card Status': '/job-card-status',
     'Branding Priorities': '/branding-priorities',
     'Mileage Monitoring': '/mileage-monitoring',
-    'Cleaning Slots': '/cleaning-slots',
+    'Communication Management': '/communication-management',
     'Stabling Positions': '/stabling-positions',
     'Cleaning & Maintenance': '/cleaning-maintenance'
   };
@@ -94,7 +94,7 @@ const Login = () => {
     { name: 'Job Card Status', icon: '🔧', color: 'from-blue-600 to-cyan-600', desc: 'Maintenance Job Tracking' },
     { name: 'Branding Priorities', icon: '🎨', color: 'from-pink-600 to-rose-600', desc: 'Advertisement & Branding' },
     { name: 'Mileage Monitoring', icon: '�', color: 'from-indigo-600 to-purple-600', desc: 'Service Mileage Tracking' },
-    { name: 'Cleaning Slots', icon: '🧽', color: 'from-teal-600 to-cyan-600', desc: 'Cleaning Schedule Management' },
+    { name: 'Communication Management', icon: '📡', color: 'from-teal-600 to-cyan-600', desc: 'Signalling & Telecom Systems' },
     { name: 'Stabling Positions', icon: '�', color: 'from-orange-600 to-red-600', desc: 'Depot Position Management' },
     { name: 'Cleaning & Maintenance', icon: '🧹', color: 'from-yellow-600 to-orange-600', desc: 'Integrated Cleaning & Maintenance' }
   ];

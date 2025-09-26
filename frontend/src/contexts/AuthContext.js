@@ -25,7 +25,7 @@ const ROLE_MAPPINGS = {
   'jobcard@kmrl.com': 'Job Card Status',
   'branding@kmrl.com': 'Branding Priorities',
   'mileage@kmrl.com': 'Mileage Monitoring',
-  'cleaning@kmrl.com': 'Cleaning Slots',
+  'communication@kmrl.com': 'Communication Management',
   'stabling@kmrl.com': 'Stabling Positions',
   'maintenance@kmrl.com': 'Cleaning & Maintenance'
 };
@@ -36,7 +36,7 @@ const ROUTE_MAPPINGS = {
   'Job Card Status': '/job-card-status',
   'Branding Priorities': '/branding-priorities',
   'Mileage Monitoring': '/mileage-monitoring',
-  'Cleaning Slots': '/cleaning-slots',
+  'Communication Management': '/communication-management',
   'Stabling Positions': '/stabling-positions',
   'Cleaning & Maintenance': '/cleaning-maintenance'
 };
@@ -48,7 +48,7 @@ const USERNAME_TO_EMAIL = {
   'jobcard': 'jobcard@kmrl.com',
   'branding': 'branding@kmrl.com',
   'mileage': 'mileage@kmrl.com',
-  'cleaning': 'cleaning@kmrl.com',
+  'communication': 'communication@kmrl.com',
   'stabling': 'stabling@kmrl.com',
   'maintenance': 'maintenance@kmrl.com'
 };

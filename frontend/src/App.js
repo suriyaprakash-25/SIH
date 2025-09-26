@@ -58,7 +58,7 @@ const AppContent = () => {
             <Route path="/job-card-status" element={<ServicePage />} />
             <Route path="/branding-priorities" element={<BrandingPage />} />
             <Route path="/mileage-monitoring" element={<EngineHealthPage />} />
-            <Route path="/cleaning-slots" element={<CleaningPage />} />
+            <Route path="/communication-management" element={<CleaningPage />} />
             <Route path="/stabling-positions" element={<TrainMonitoring />} />
             <Route path="/cleaning-maintenance" element={<CleaningMaintenancePage />} />
           </Routes>
