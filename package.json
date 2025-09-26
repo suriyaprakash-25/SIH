@@ -1,0 +1,18 @@
+{
+  "name": "kmrl-metro-firebase-setup",
+  "version": "1.0.0",
+  "description": "Firebase setup for KMRL Metro Monitoring System",
+  "scripts": {
+    "setup-firebase": "node setup-firestore.js",
+    "deploy-rules": "firebase deploy --only firestore:rules",
+    "start-emulators": "firebase emulators:start",
+    "login": "firebase login",
+    "init": "firebase init"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.5.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.17.0"
+  }
+}

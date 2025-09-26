@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -9,27 +10,31 @@ const Login = () => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  // Demo credentials (hidden from UI)
+  // Demo credentials (Simple format)
   const validCredentials = {
-    'Admin': { username: 'admin2024', password: 'KMRL@admin#2024' },
-    'Engineering Officer': { username: 'engine.tech', password: 'Engine#Health@123' },
-    'Safety Officer': { username: 'safety.first', password: 'Safety&Secure@456' },
-    'Certification Officer': { username: 'cert.officer', password: 'CertValid@789' },
-    'Maintenance Officer': { username: 'maint.pro', password: 'Maintain#Power@321' },
-    'Operations Officer': { username: 'ops.manager', password: 'Operations@654' },
-    'Driver/Pilot': { username: 'pilot.drive', password: 'SafeDrive@987' }
+    'Admin': { email: 'admin@kmrl.com', password: 'admin123' },
+    'Fitness Certificates': { email: 'fitness@kmrl.com', password: 'fitness123' },
+    'Job Card Status': { email: 'jobcard@kmrl.com', password: 'jobcard123' },
+    'Branding Priorities': { email: 'branding@kmrl.com', password: 'branding123' },
+    'Mileage Monitoring': { email: 'mileage@kmrl.com', password: 'mileage123' },
+    'Cleaning Slots': { email: 'cleaning@kmrl.com', password: 'cleaning123' },
+    'Stabling Positions': { email: 'stabling@kmrl.com', password: 'stabling123' },
+    'Cleaning & Maintenance': { email: 'maintenance@kmrl.com', password: 'maintenance123' }
   };
 
   const roleRoutes = {
     'Admin': '/admin-dashboard',
-    'Engineering Officer': '/engineering-dashboard',
-    'Safety Officer': '/safety-dashboard',
-    'Certification Officer': '/certification-dashboard',
-    'Maintenance Officer': '/maintenance-dashboard',
-    'Operations Officer': '/operations-dashboard',
-    'Driver/Pilot': '/driver-dashboard'
+    'Fitness Certificates': '/fitness-certificates',
+    'Job Card Status': '/job-card-status',
+    'Branding Priorities': '/branding-priorities',
+    'Mileage Monitoring': '/mileage-monitoring',
+    'Cleaning Slots': '/cleaning-slots',
+    'Stabling Positions': '/stabling-positions',
+    'Cleaning & Maintenance': '/cleaning-maintenance'
   };
 
   const handleRoleSelect = (role) => {
@@ -37,25 +42,61 @@ const Login = () => {
     setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const valid = validCredentials[credentials.role];
-    
-    if (valid && credentials.username === valid.username && credentials.password === valid.password) {
-      navigate(roleRoutes[credentials.role]);
-    } else {
-      setError('Invalid credentials. Please try again.');
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // Handle both email and username formats
+      let email = credentials.username;
+      
+      // If it's not an email, convert username to Firebase email format
+      if (!email.includes('@')) {
+        email = `${credentials.username}@kmrl.com`;
+      }
+      
+      // Use Firebase authentication
+      const result = await login({
+        username: credentials.username,
+        email: email,
+        password: credentials.password,
+        role: credentials.role
+      });
+      
+      if (result) {
+        // Navigate to role-specific page
+        navigate(roleRoutes[credentials.role]);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      
+      // Provide user-friendly error messages
+      if (error.code === 'auth/user-not-found') {
+        setError('User not found. Please check your email address.');
+      } else if (error.code === 'auth/wrong-password') {
+        setError('Invalid password. Please try again.');
+      } else if (error.code === 'auth/invalid-email') {
+        setError('Invalid username format.');
+      } else if (error.code === 'auth/too-many-requests') {
+        setError('Too many failed attempts. Please try again later.');
+      } else {
+        setError('Authentication failed. Please check your credentials.');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const roles = [
     { name: 'Admin', icon: '👨‍💼', color: 'from-purple-600 to-blue-600', desc: 'System Administration' },
-    { name: 'Engineering Officer', icon: '⚙️', color: 'from-blue-600 to-cyan-600', desc: 'Technical Operations' },
-    { name: 'Safety Officer', icon: '🛡️', color: 'from-green-600 to-teal-600', desc: 'Safety Management' },
-    { name: 'Certification Officer', icon: '📋', color: 'from-orange-600 to-red-600', desc: 'Certificate Management' },
-    { name: 'Maintenance Officer', icon: '🔧', color: 'from-yellow-600 to-orange-600', desc: 'Equipment Maintenance' },
-    { name: 'Operations Officer', icon: '📊', color: 'from-indigo-600 to-purple-600', desc: 'Operations Control' },
-    { name: 'Driver/Pilot', icon: '🚊', color: 'from-emerald-600 to-green-600', desc: 'Train Operations' }
+    { name: 'Fitness Certificates', icon: '📋', color: 'from-green-600 to-emerald-600', desc: 'Train Fitness Certification' },
+    { name: 'Job Card Status', icon: '🔧', color: 'from-blue-600 to-cyan-600', desc: 'Maintenance Job Tracking' },
+    { name: 'Branding Priorities', icon: '🎨', color: 'from-pink-600 to-rose-600', desc: 'Advertisement & Branding' },
+    { name: 'Mileage Monitoring', icon: '�', color: 'from-indigo-600 to-purple-600', desc: 'Service Mileage Tracking' },
+    { name: 'Cleaning Slots', icon: '🧽', color: 'from-teal-600 to-cyan-600', desc: 'Cleaning Schedule Management' },
+    { name: 'Stabling Positions', icon: '�', color: 'from-orange-600 to-red-600', desc: 'Depot Position Management' },
+    { name: 'Cleaning & Maintenance', icon: '🧹', color: 'from-yellow-600 to-orange-600', desc: 'Integrated Cleaning & Maintenance' }
   ];
 
   return (
@@ -137,15 +178,15 @@ const Login = () => {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                      Username
+                      Email Address
                     </label>
                     <input
-                      type="text"
+                      type="email"
                       id="username"
                       value={credentials.username}
                       onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-white/50 backdrop-blur-sm"
-                      placeholder="Enter your username"
+                      placeholder="Enter your email (e.g., admin2024@kmrl.com)"
                       required
                     />
                   </div>
@@ -173,11 +214,21 @@ const Login = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    Sign In
+                    {isLoading ? 'Signing In...' : 'Sign In'}
                   </button>
                 </form>
+
+                {/* Demo Credentials Helper */}
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                  <p className="text-sm text-blue-800 font-medium mb-1">Sample Credentials:</p>
+                  <p className="text-xs text-blue-600">
+                    Admin: <code className="bg-blue-100 px-1 rounded">admin2024@kmrl.com</code> / <code className="bg-blue-100 px-1 rounded">KMRL@admin#2024</code><br/>
+                    Cleaning & Maintenance: <code className="bg-blue-100 px-1 rounded">clean.maintenance@kmrl.com</code> / <code className="bg-blue-100 px-1 rounded">CleanMaint@2024</code>
+                  </p>
+                </div>
 
                 <button
                   onClick={() => setCredentials({ role: '', username: '', password: '' })}

@@ -15,6 +15,7 @@ import CertificationPage from './pages/CertificationPage';
 import BrandingPage from './pages/BrandingPage';
 import MaintenancePage from './pages/MaintenancePage';
 import ServicePage from './pages/ServicePage';
+import CleaningMaintenancePage from './pages/CleaningMaintenancePage';
 
 const AppContent = () => {
   const { user, loading } = useAuth();
@@ -51,6 +52,15 @@ const AppContent = () => {
             <Route path="/branding" element={<BrandingPage />} />
             <Route path="/maintenance" element={<MaintenancePage />} />
             <Route path="/service" element={<ServicePage />} />
+            
+            {/* New role-based routes */}
+            <Route path="/fitness-certificates" element={<CertificationPage />} />
+            <Route path="/job-card-status" element={<ServicePage />} />
+            <Route path="/branding-priorities" element={<BrandingPage />} />
+            <Route path="/mileage-monitoring" element={<EngineHealthPage />} />
+            <Route path="/cleaning-slots" element={<CleaningPage />} />
+            <Route path="/stabling-positions" element={<TrainMonitoring />} />
+            <Route path="/cleaning-maintenance" element={<CleaningMaintenancePage />} />
           </Routes>
         </main>
       </div>

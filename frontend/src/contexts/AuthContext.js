@@ -1,4 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  User 
+} from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 
 const AuthContext = createContext();
 
@@ -10,63 +18,223 @@ export const useAuth = () => {
   return context;
 };
 
+// Role mappings for Firebase auth
+const ROLE_MAPPINGS = {
+  'admin@kmrl.com': 'Admin',
+  'fitness@kmrl.com': 'Fitness Certificates',
+  'jobcard@kmrl.com': 'Job Card Status',
+  'branding@kmrl.com': 'Branding Priorities',
+  'mileage@kmrl.com': 'Mileage Monitoring',
+  'cleaning@kmrl.com': 'Cleaning Slots',
+  'stabling@kmrl.com': 'Stabling Positions',
+  'maintenance@kmrl.com': 'Cleaning & Maintenance'
+};
+
+const ROUTE_MAPPINGS = {
+  'Admin': '/admin-dashboard',
+  'Fitness Certificates': '/fitness-certificates',
+  'Job Card Status': '/job-card-status',
+  'Branding Priorities': '/branding-priorities',
+  'Mileage Monitoring': '/mileage-monitoring',
+  'Cleaning Slots': '/cleaning-slots',
+  'Stabling Positions': '/stabling-positions',
+  'Cleaning & Maintenance': '/cleaning-maintenance'
+};
+
+// Legacy username to email mapping for backward compatibility
+const USERNAME_TO_EMAIL = {
+  'admin': 'admin@kmrl.com',
+  'fitness': 'fitness@kmrl.com',
+  'jobcard': 'jobcard@kmrl.com',
+  'branding': 'branding@kmrl.com',
+  'mileage': 'mileage@kmrl.com',
+  'cleaning': 'cleaning@kmrl.com',
+  'stabling': 'stabling@kmrl.com',
+  'maintenance': 'maintenance@kmrl.com'
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check for existing session on mount
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      try {
-        const userData = JSON.parse(savedUser);
-        setUser(userData);
-      } catch (error) {
-        console.error('Error parsing saved user data:', error);
-        localStorage.removeItem('user');
-      }
+  // Firebase sign in with email and password
+  const signInFirebase = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      
+      // Get user role from email mapping
+      const role = ROLE_MAPPINGS[user.email];
+      setUserRole(role);
+      
+      return { user, role, route: ROUTE_MAPPINGS[role] };
+    } catch (error) {
+      console.error('Firebase sign in error:', error);
+      throw error;
     }
-    setLoading(false);
-  }, []);
-
-  const login = (userData) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  // Firebase authentication method (primary)
+  const login = async (credentials) => {
+    try {
+      // Use Firebase authentication
+      const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
+      const user = userCredential.user;
+      
+      // Get role from email mapping
+      const role = ROLE_MAPPINGS[user.email] || credentials.role;
+      
+      // Set state
+      setCurrentUser(user);
+      setUserRole(role);
+      
+      // Create user data object
+      const userData = {
+        username: credentials.username,
+        role: role,
+        email: user.email,
+        uid: user.uid,
+        authenticated: true,
+        firebaseUser: user,
+        loginTime: new Date().toISOString()
+      };
+      
+      return userData;
+    } catch (error) {
+      console.error('Firebase login error:', error);
+      throw error;
+    }
   };
 
+  // Firebase login method (for future use)
+  const loginWithFirebase = async (credentials) => {
+    try {
+      // Convert username to email format
+      const email = USERNAME_TO_EMAIL[credentials.username];
+      if (!email) {
+        throw new Error('Invalid username');
+      }
+
+      // Use Firebase authentication
+      const result = await signInFirebase(email, credentials.password);
+      
+      // Create user object for compatibility
+      const userData = {
+        username: credentials.username,
+        role: result.role,
+        email: email,
+        firebaseUser: result.user,
+        authenticated: true
+      };
+      
+      return userData;
+    } catch (error) {
+      console.error('Firebase login error:', error);
+      throw error;
+    }
+  };
+
+  // Firebase sign out
+  const logout = async () => {
+    try {
+      // Sign out from Firebase
+      await signOut(auth);
+      
+      // Clear local storage (cleanup)
+      localStorage.removeItem('kmrlUser');
+      localStorage.removeItem('kmrlAuth');
+      
+      // State will be cleared by onAuthStateChanged listener
+    } catch (error) {
+      console.error('Sign out error:', error);
+      throw error;
+    }
+  };
+
+  // Legacy authorization check
   const isAuthorized = (requiredPage) => {
-    if (!user) return false;
+    if (!currentUser || !userRole) return false;
     
     // Admin has access to all pages
-    if (user.role === 'admin') return true;
+    if (userRole === 'Admin') return true;
     
-    // Check if user has access to specific page
-    return user.pages && user.pages.includes(requiredPage);
+    // Role-specific page access
+    const rolePages = {
+      'Engineering Officer': ['dashboard', 'engineering', 'engine'],
+      'Safety Officer': ['dashboard', 'safety'],
+      'Certification Officer': ['dashboard', 'certification'],
+      'Maintenance Officer': ['dashboard', 'maintenance'],
+      'Operations Officer': ['dashboard', 'operations', 'service'],
+      'Driver/Pilot': ['dashboard', 'driver', 'pilot']
+    };
+    
+    return rolePages[userRole]?.includes(requiredPage) || false;
   };
 
+  // Get user pages based on role
   const getUserPages = () => {
-    if (!user) return [];
+    if (!userRole) return [];
     
-    if (user.role === 'admin') {
+    if (userRole === 'Admin') {
       return ['dashboard', 'planning', 'engine', 'cleaning', 'certification', 'branding', 'maintenance', 'service'];
     }
     
-    return user.pages || [];
+    const rolePages = {
+      'Engineering Officer': ['dashboard', 'engineering'],
+      'Safety Officer': ['dashboard', 'safety'],
+      'Certification Officer': ['dashboard', 'certification'],
+      'Maintenance Officer': ['dashboard', 'maintenance'],
+      'Operations Officer': ['dashboard', 'operations'],
+      'Driver/Pilot': ['dashboard', 'driver']
+    };
+    
+    return rolePages[userRole] || [];
   };
 
+  // Monitor Firebase auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // User is signed in
+        setCurrentUser(user);
+        const role = ROLE_MAPPINGS[user.email];
+        setUserRole(role);
+        console.log('User authenticated:', user.email, 'Role:', role);
+      } else {
+        // User is signed out
+        setCurrentUser(null);
+        setUserRole(null);
+        console.log('User signed out');
+      }
+      setLoading(false);
+    });
+
+    return unsubscribe;
+  }, []);
+
   const value = {
-    user,
+    // Firebase methods
+    currentUser,
+    userRole,
+    signInFirebase,
+    loginWithFirebase,
+    
+    // Main authentication methods
+    user: currentUser ? { 
+      username: currentUser.email?.split('@')[0], 
+      role: userRole, 
+      email: currentUser.email,
+      uid: currentUser.uid,
+      authenticated: true,
+      firebaseUser: currentUser
+    } : null,
     login,
     logout,
     isAuthorized,
     getUserPages,
     loading,
-    isAuthenticated: !!user
+    isAuthenticated: !!currentUser
   };
 
   return (

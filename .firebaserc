@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "sih-logins"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

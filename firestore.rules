@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User documents - users can read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Admin has full access to everything
+    match /{document=**} {
+      allow read, write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'Admin';
+    }
+    
+    // Role-based access for different collections
+    match /certificates/{certId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Fitness Certificates']);
+    }
+    
+    match /jobCards/{jobId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Job Card Status', 'Cleaning & Maintenance']);
+    }
+    
+    match /branding/{brandId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Branding Priorities']);
+    }
+    
+    match /mileage/{mileageId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Mileage Monitoring']);
+    }
+    
+    match /cleaning/{cleaningId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Cleaning Slots', 'Cleaning & Maintenance']);
+    }
+    
+    match /stabling/{stablingId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Stabling Positions']);
+    }
+    
+    match /maintenance/{maintenanceId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in 
+         ['Admin', 'Cleaning & Maintenance']);
+    }
+  }
+}
