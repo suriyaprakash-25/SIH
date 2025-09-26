@@ -221,15 +221,6 @@ const Login = () => {
                   </button>
                 </form>
 
-                {/* Demo Credentials Helper */}
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
-                  <p className="text-sm text-blue-800 font-medium mb-1">Sample Credentials:</p>
-                  <p className="text-xs text-blue-600">
-                    Admin: <code className="bg-blue-100 px-1 rounded">admin2024@kmrl.com</code> / <code className="bg-blue-100 px-1 rounded">KMRL@admin#2024</code><br/>
-                    Cleaning & Maintenance: <code className="bg-blue-100 px-1 rounded">clean.maintenance@kmrl.com</code> / <code className="bg-blue-100 px-1 rounded">CleanMaint@2024</code>
-                  </p>
-                </div>
-
                 <button
                   onClick={() => setCredentials({ role: '', username: '', password: '' })}
                   className="mt-6 w-full text-gray-600 text-sm hover:text-gray-800 transition-colors"
