@@ -20,21 +20,17 @@ const Login = () => {
     'Fitness Certificates': { email: 'fitness@kmrl.com', password: 'fitness123' },
     'Job Card Status': { email: 'jobcard@kmrl.com', password: 'jobcard123' },
     'Branding Priorities': { email: 'branding@kmrl.com', password: 'branding123' },
-    'Mileage Monitoring': { email: 'mileage@kmrl.com', password: 'mileage123' },
     'Communication Management': { email: 'communication@kmrl.com', password: 'communication123' },
-    'Stabling Positions': { email: 'stabling@kmrl.com', password: 'stabling123' },
     'Cleaning & Maintenance': { email: 'maintenance@kmrl.com', password: 'maintenance123' }
   };
 
   const roleRoutes = {
-    'Admin': '/admin-dashboard',
-    'Fitness Certificates': '/fitness-certificates',
-    'Job Card Status': '/job-card-status',
-    'Branding Priorities': '/branding-priorities',
-    'Mileage Monitoring': '/mileage-monitoring',
-    'Communication Management': '/communication-management',
-    'Stabling Positions': '/stabling-positions',
-    'Cleaning & Maintenance': '/cleaning-maintenance'
+    'Admin': '/dashboard',
+    'Fitness Certificates': '/certification',
+    'Job Card Status': '/job-card',
+    'Branding Priorities': '/branding',
+    'Communication Management': '/cleaning',
+    'Cleaning & Maintenance': '/maintenance'
   };
 
   const handleRoleSelect = (role) => {
@@ -89,14 +85,12 @@ const Login = () => {
   };
 
   const roles = [
-    { name: 'Admin', icon: '👨‍💼', color: 'from-purple-600 to-blue-600', desc: 'System Administration' },
+    { name: 'Admin', icon: '👨‍💼', color: 'from-purple-600 to-blue-600', desc: 'System Administration & Analytics' },
     { name: 'Fitness Certificates', icon: '📋', color: 'from-green-600 to-emerald-600', desc: 'Train Fitness Certification' },
     { name: 'Job Card Status', icon: '🔧', color: 'from-blue-600 to-cyan-600', desc: 'Maintenance Job Tracking' },
     { name: 'Branding Priorities', icon: '🎨', color: 'from-pink-600 to-rose-600', desc: 'Advertisement & Branding' },
-    { name: 'Mileage Monitoring', icon: '�', color: 'from-indigo-600 to-purple-600', desc: 'Service Mileage Tracking' },
     { name: 'Communication Management', icon: '📡', color: 'from-teal-600 to-cyan-600', desc: 'Signalling & Telecom Systems' },
-    { name: 'Stabling Positions', icon: '�', color: 'from-orange-600 to-red-600', desc: 'Depot Position Management' },
-    { name: 'Cleaning & Maintenance', icon: '🧹', color: 'from-yellow-600 to-orange-600', desc: 'Integrated Cleaning & Maintenance' }
+    { name: 'Cleaning & Maintenance', icon: '🧹', color: 'from-yellow-600 to-orange-600', desc: 'Comprehensive Cleaning Operations' }
   ];
 
   return (

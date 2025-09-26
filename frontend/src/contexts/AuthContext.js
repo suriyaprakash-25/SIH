@@ -24,21 +24,17 @@ const ROLE_MAPPINGS = {
   'fitness@kmrl.com': 'Fitness Certificates',
   'jobcard@kmrl.com': 'Job Card Status',
   'branding@kmrl.com': 'Branding Priorities',
-  'mileage@kmrl.com': 'Mileage Monitoring',
   'communication@kmrl.com': 'Communication Management',
-  'stabling@kmrl.com': 'Stabling Positions',
   'maintenance@kmrl.com': 'Cleaning & Maintenance'
 };
 
 const ROUTE_MAPPINGS = {
-  'Admin': '/admin-dashboard',
-  'Fitness Certificates': '/fitness-certificates',
-  'Job Card Status': '/job-card-status',
-  'Branding Priorities': '/branding-priorities',
-  'Mileage Monitoring': '/mileage-monitoring',
-  'Communication Management': '/communication-management',
-  'Stabling Positions': '/stabling-positions',
-  'Cleaning & Maintenance': '/cleaning-maintenance'
+  'Admin': '/dashboard',
+  'Fitness Certificates': '/certification',
+  'Job Card Status': '/job-card',
+  'Branding Priorities': '/branding',
+  'Communication Management': '/cleaning',
+  'Cleaning & Maintenance': '/maintenance'
 };
 
 // Legacy username to email mapping for backward compatibility
@@ -47,9 +43,7 @@ const USERNAME_TO_EMAIL = {
   'fitness': 'fitness@kmrl.com',
   'jobcard': 'jobcard@kmrl.com',
   'branding': 'branding@kmrl.com',
-  'mileage': 'mileage@kmrl.com',
   'communication': 'communication@kmrl.com',
-  'stabling': 'stabling@kmrl.com',
   'maintenance': 'maintenance@kmrl.com'
 };
 

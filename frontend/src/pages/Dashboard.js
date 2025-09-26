@@ -6,11 +6,13 @@ import {
 import { 
   Train, Users, Clock, AlertTriangle, TrendingUp, 
   Activity, Battery, MapPin, Zap, Droplets, FileCheck, 
-  Palette, Wrench, Gauge, CheckCircle, XCircle
+  Palette, Wrench, Gauge, CheckCircle, XCircle, Navigation
 } from 'lucide-react';
 import { trainService } from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [fleetData, setFleetData] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -412,6 +414,187 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Admin-Only Sections: Stabling Positions & Mileage Monitoring */}
+      {user?.role === 'Admin' && (
+        <>
+          {/* Stabling Positions Management */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-blue-500" />
+                Stabling Positions Management
+              </h2>
+              <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                Optimize Positions
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/10 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Total Bays</p>
+                    <p className="text-2xl font-bold text-blue-600">12</p>
+                  </div>
+                  <MapPin className="w-8 h-8 text-blue-500" />
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-green-500/10 to-green-600/10 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Occupied</p>
+                    <p className="text-2xl font-bold text-green-600">8</p>
+                  </div>
+                  <CheckCircle className="w-8 h-8 text-green-500" />
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-orange-500/10 to-orange-600/10 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Available</p>
+                    <p className="text-2xl font-bold text-orange-600">4</p>
+                  </div>
+                  <Navigation className="w-8 h-8 text-orange-500" />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">Bay Occupancy Status</h3>
+                {[1,2,3,4,5,6].map(bay => (
+                  <div key={bay} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <span className="font-medium">Bay {bay}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">KMRL-TS-{(bay * 4).toString().padStart(2, '0')}</span>
+                      <span className="px-2 py-1 text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full">
+                        Occupied
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">Maintenance Schedule</h3>
+                {[7,8,9,10,11,12].map(bay => (
+                  <div key={bay} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <span className="font-medium">Bay {bay}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {bay > 10 ? 'Available' : `KMRL-TS-${((bay-6) * 3 + 15).toString().padStart(2, '0')}`}
+                      </span>
+                      <span className={`px-2 py-1 text-xs rounded-full ${
+                        bay > 10 ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 
+                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      }`}>
+                        {bay > 10 ? 'Available' : 'Maintenance'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Mileage Monitoring & Analytics */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Gauge className="w-5 h-5 text-purple-500" />
+                Mileage Monitoring & Analytics
+              </h2>
+              <button className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg transition-colors">
+                Generate Report
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Total Fleet Mileage</p>
+                    <p className="text-2xl font-bold text-purple-600">2.4M km</p>
+                  </div>
+                  <TrendingUp className="w-8 h-8 text-purple-500" />
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-green-500/10 to-green-600/10 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Avg Daily Mileage</p>
+                    <p className="text-2xl font-bold text-green-600">450 km</p>
+                  </div>
+                  <Gauge className="w-8 h-8 text-green-500" />
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-orange-500/10 to-orange-600/10 p-4 rounded-lg border border-orange-200 dark:border-orange-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">High Mileage Trains</p>
+                    <p className="text-2xl font-bold text-orange-600">5</p>
+                  </div>
+                  <AlertTriangle className="w-8 h-8 text-orange-500" />
+                </div>
+              </div>
+              
+              <div className="bg-gradient-to-r from-blue-500/10 to-blue-600/10 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Efficiency Score</p>
+                    <p className="text-2xl font-bold text-blue-600">92%</p>
+                  </div>
+                  <CheckCircle className="w-8 h-8 text-blue-500" />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">High Mileage Trains (Maintenance Priority)</h3>
+                {['KMRL-TS-08', 'KMRL-TS-15', 'KMRL-TS-22', 'KMRL-TS-03', 'KMRL-TS-19'].map((train, index) => (
+                  <div key={train} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <span className="font-medium">{train}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {(125000 - index * 8000).toLocaleString()} km
+                      </span>
+                      <span className="px-2 py-1 text-xs bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full">
+                        {index < 2 ? 'Critical' : 'High'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="space-y-3">
+                <h3 className="font-medium text-gray-900 dark:text-white">Predictive Maintenance Schedule</h3>
+                {['KMRL-TS-08', 'KMRL-TS-15', 'KMRL-TS-22', 'KMRL-TS-03', 'KMRL-TS-19'].map((train, index) => (
+                  <div key={train} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <span className="font-medium">{train}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {index < 2 ? 'Next 7 days' : `${(index + 1) * 14} days`}
+                      </span>
+                      <span className={`px-2 py-1 text-xs rounded-full ${
+                        index < 2 ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
+                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      }`}>
+                        {index < 2 ? 'Urgent' : 'Scheduled'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
