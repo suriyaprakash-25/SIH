@@ -613,4 +613,119 @@ export const trainService = {
   }
 };
 
+// Job Card Management Service
+export const jobCardService = {
+  async getJobCards(trainId) {
+    try {
+      const response = await apiService.get(`/jobcards/${trainId || 'all'}`);
+      return response.data || response;
+    } catch (error) {
+      console.warn('Backend not available, using localStorage');
+      const stored = localStorage.getItem(`jobCards_${trainId}`);
+      return stored ? JSON.parse(stored) : [];
+    }
+  },
+
+  async createJobCard(jobCardData) {
+    try {
+      return await apiService.post('/jobcards', jobCardData);
+    } catch (error) {
+      console.warn('Backend not available, saving to localStorage');
+      const trainId = jobCardData.trainId;
+      const existing = this.getJobCards(trainId);
+      const newJobCard = {
+        ...jobCardData,
+        id: `JC-2024-${String(Date.now()).slice(-3)}`,
+        createdAt: new Date().toISOString().split('T')[0],
+        status: 'Open'
+      };
+      
+      await existing;
+      existing.push(newJobCard);
+      localStorage.setItem(`jobCards_${trainId}`, JSON.stringify(existing));
+      return newJobCard;
+    }
+  },
+
+  async updateJobCard(jobCardId, updates) {
+    try {
+      return await apiService.put(`/jobcards/${jobCardId}`, updates);
+    } catch (error) {
+      console.warn('Backend not available, updating localStorage');
+      // Find and update in localStorage across all trains
+      const trainIds = Array.from({length: 25}, (_, i) => `KMRL-TS-${String(i + 1).padStart(2, '0')}`);
+      
+      for (const trainId of trainIds) {
+        const stored = localStorage.getItem(`jobCards_${trainId}`);
+        if (stored) {
+          const jobCards = JSON.parse(stored);
+          const index = jobCards.findIndex(jc => jc.id === jobCardId);
+          if (index !== -1) {
+            jobCards[index] = { ...jobCards[index], ...updates };
+            localStorage.setItem(`jobCards_${trainId}`, JSON.stringify(jobCards));
+            return jobCards[index];
+          }
+        }
+      }
+      throw new Error('Job card not found');
+    }
+  },
+
+  async deleteJobCard(jobCardId) {
+    try {
+      return await apiService.delete(`/jobcards/${jobCardId}`);
+    } catch (error) {
+      console.warn('Backend not available, removing from localStorage');
+      // Similar logic to update but remove the item
+      const trainIds = Array.from({length: 25}, (_, i) => `KMRL-TS-${String(i + 1).padStart(2, '0')}`);
+      
+      for (const trainId of trainIds) {
+        const stored = localStorage.getItem(`jobCards_${trainId}`);
+        if (stored) {
+          const jobCards = JSON.parse(stored);
+          const index = jobCards.findIndex(jc => jc.id === jobCardId);
+          if (index !== -1) {
+            const removed = jobCards.splice(index, 1);
+            localStorage.setItem(`jobCards_${trainId}`, JSON.stringify(jobCards));
+            return removed[0];
+          }
+        }
+      }
+      throw new Error('Job card not found');
+    }
+  },
+
+  async getTrainFactors(trainId) {
+    try {
+      const response = await apiService.get(`/trains/${trainId}/factors`);
+      return response.data || response;
+    } catch (error) {
+      console.warn('Backend not available, using localStorage for factors');
+      const stored = localStorage.getItem(`trainFactors_${trainId}`);
+      return stored ? JSON.parse(stored) : this.generateDefaultFactors();
+    }
+  },
+
+  async updateTrainFactors(trainId, factors) {
+    try {
+      return await apiService.put(`/trains/${trainId}/factors`, factors);
+    } catch (error) {
+      console.warn('Backend not available, saving factors to localStorage');
+      localStorage.setItem(`trainFactors_${trainId}`, JSON.stringify(factors));
+      return factors;
+    }
+  },
+
+  generateDefaultFactors() {
+    return {
+      engine: { status: 'good', score: 85, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 },
+      cleaning: { status: 'good', score: 82, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 },
+      certificates: { status: 'good', score: 95, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 },
+      branding: { status: 'warning', score: 70, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 },
+      maintenance: { status: 'good', score: 88, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 },
+      serviceInterval: { status: 'good', score: 90, lastCheck: new Date().toISOString().split('T')[0], openJobCards: 0 }
+    };
+  }
+};
+
 export default apiService;

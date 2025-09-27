@@ -15,6 +15,7 @@ import CertificationPage from './pages/CertificationPage';
 import BrandingPage from './pages/BrandingPage';
 import MaintenancePage from './pages/MaintenancePage';
 import ServicePage from './pages/ServicePage';
+import JobCardStatusPage from './pages/JobCardStatusPage';
 import CleaningMaintenancePage from './pages/CleaningMaintenancePage';
 
 const AppContent = () => {
@@ -55,7 +56,7 @@ const AppContent = () => {
             
             {/* New role-based routes */}
             <Route path="/fitness-certificates" element={<CertificationPage />} />
-            <Route path="/job-card-status" element={<ServicePage />} />
+            <Route path="/job-card-status" element={<JobCardStatusPage />} />
             <Route path="/branding-priorities" element={<BrandingPage />} />
             <Route path="/mileage-monitoring" element={<EngineHealthPage />} />
             <Route path="/communication-management" element={<CleaningPage />} />
