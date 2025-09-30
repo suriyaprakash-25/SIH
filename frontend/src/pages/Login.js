@@ -229,7 +229,7 @@ const Login = () => {
         {/* Footer */}
         <div className="text-center pb-6">
           <p className="text-blue-200 text-sm">
-            © 2024 Kochi Metro Rail Limited. All rights reserved.
+            © 2025 Kochi Metro Rail Limited. All rights reserved.
           </p>
         </div>
       </div>
