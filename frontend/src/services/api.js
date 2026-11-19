@@ -1,5 +1,5 @@
 // API service for communicating with the backend
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 class APIService {
   async request(endpoint, options = {}) {
@@ -537,7 +537,9 @@ export const trainService = {
 
     try {
       const { jsPDF } = await import('jspdf');
-      await import('jspdf-autotable');
+      // jspdf-autotable v5 no longer patches jsPDF on import; register it explicitly.
+      const { applyPlugin } = await import('jspdf-autotable');
+      applyPlugin(jsPDF);
 
       const doc = new jsPDF();
 
@@ -581,7 +583,9 @@ export const trainService = {
   async exportComparisonReport(originalPlan, simulatedPlan, comparison) {
     try {
       const { jsPDF } = await import('jspdf');
-      await import('jspdf-autotable');
+      // jspdf-autotable v5 no longer patches jsPDF on import; register it explicitly.
+      const { applyPlugin } = await import('jspdf-autotable');
+      applyPlugin(jsPDF);
 
       const doc = new jsPDF();
 

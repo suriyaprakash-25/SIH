@@ -12,12 +12,15 @@
   "author": "Metro Induction Planner Team",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.22.3",
     "cors": "^2.8.5",
-    "morgan": "^1.10.0",
+    "morgan": "^1.12.1",
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.14"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
   }
 }
