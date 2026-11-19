@@ -60,7 +60,7 @@ flowchart LR
 
 | Layer | Technologies |
 |---|---|
-| Frontend | React 18, React Router 6, Vite, Tailwind CSS 3, Recharts, lucide-react, jsPDF + jspdf-autotable |
+| Frontend | React 18, React Router 7, Vite, Tailwind CSS 3, Recharts, lucide-react, jsPDF + jspdf-autotable |
 | Backend | Node.js, Express 4, cors, morgan, dotenv |
 | Auth and hosting | Firebase Authentication, Cloud Firestore rules, Firebase Hosting config; Vercel configs for frontend and backend |
 | Data | JSON files (sample data) |
