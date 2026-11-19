@@ -27,7 +27,7 @@ This is a **Smart India Hackathon (SIH)** prototype built around a KMRL train-in
 
 ```mermaid
 flowchart LR
-    U["Supervisor / department user"] --> FE["React SPA (Create React App + Tailwind)"]
+    U["Supervisor / department user"] --> FE["React SPA (Vite + Tailwind)"]
     FE -->|"sign in"| FA["Firebase Authentication"]
     FE -->|"REST /api"| BE["Express API (backend/server.js)"]
     BE --> DS["dataService.js: merge + score"]
@@ -60,7 +60,7 @@ flowchart LR
 
 | Layer | Technologies |
 |---|---|
-| Frontend | React 18, React Router 6, Create React App (react-scripts 5), Tailwind CSS 3, Recharts, lucide-react, jsPDF + jspdf-autotable |
+| Frontend | React 18, React Router 6, Vite, Tailwind CSS 3, Recharts, lucide-react, jsPDF + jspdf-autotable |
 | Backend | Node.js, Express 4, cors, morgan, dotenv |
 | Auth and hosting | Firebase Authentication, Cloud Firestore rules, Firebase Hosting config; Vercel configs for frontend and backend |
 | Data | JSON files (sample data) |
@@ -76,11 +76,13 @@ SIH/
 │   └── vercel.json               # Vercel serverless config for the API
 ├── data/                         # fleet_master, certificates, job_cards, branding (JSON)
 ├── frontend/
+│   ├── index.html                # Vite entry HTML
+│   ├── vite.config.js            # Dev server on :3000, build output in build/
 │   └── src/
-│       ├── App.js                # Routes (dashboard, planning, simulation, department pages)
+│       ├── App.jsx               # Routes (dashboard, planning, simulation, department pages)
 │       ├── pages/                # Dashboard, TrainPlanning, Simulation, DataInputs, department pages
-│       ├── components/Sidebar.js # Role-aware navigation
-│       ├── contexts/AuthContext.js  # Firebase auth and role mapping
+│       ├── components/Sidebar.jsx # Role-aware navigation
+│       ├── contexts/AuthContext.jsx # Firebase auth and role mapping
 │       ├── services/api.js       # API client, mock fallback, client planner, exports
 │       └── config/firebase.js    # Firebase web config
 ├── firebase.json, firestore.rules, firestore.indexes.json
@@ -94,7 +96,7 @@ SIH/
 
 ### Prerequisites
 
-- Node.js 16 or later and npm
+- Node.js 20.19+ or 22.12+ and npm (required by Vite)
 - A Firebase project with Email/Password authentication enabled (for logins)
 
 ### Installation
@@ -112,9 +114,11 @@ cd ../frontend && npm install
 | Variable | Where | Purpose |
 |---|---|---|
 | `PORT` | backend | API port (default `5000`) |
-| `REACT_APP_API_URL` | frontend | Backend base URL including `/api` (default `http://localhost:5001/api`) |
+| `VITE_API_URL` | frontend | Backend base URL including `/api` (default `http://localhost:5001/api`) |
 
-Note that the defaults do not match: either start the backend with `PORT=5001` or set `REACT_APP_API_URL=http://localhost:5000/api`. The backend's CORS allowlist only includes `http://localhost:3000` and `http://127.0.0.1:3000`.
+Note that the defaults do not match: either start the backend with `PORT=5001` or set `VITE_API_URL=http://localhost:5000/api`. The backend's CORS allowlist only includes `http://localhost:3000` and `http://127.0.0.1:3000`.
+
+The frontend was migrated from Create React App to Vite, so the variable formerly called `REACT_APP_API_URL` is now `VITE_API_URL` (read via `import.meta.env`). Vite inlines it at build time, so set it in `frontend/.env.local` or in your hosting provider before running `npm run build`.
 
 The Firebase web config lives in [`frontend/src/config/firebase.js`](frontend/src/config/firebase.js); point it at your own Firebase project and create the department users there (see [FIREBASE_SETUP.md](FIREBASE_SETUP.md)). `setup-firestore.js` expects a service account key saved as `firebase-admin-key.json` in the repository root; that file must never be committed.
 
@@ -127,8 +131,10 @@ npm run dev          # or: npm start
 
 # Terminal 2: UI on http://localhost:3000
 cd frontend
-npm start
+npm start            # or: npm run dev
 ```
+
+Production build: `cd frontend && npm run build` writes static files to `frontend/build/` (the same folder Create React App used, so `vercel.json` and `firebase.json` are unchanged). `npm run preview` serves that build locally.
 
 On Windows, [`start.bat`](start.bat) starts both (note that it first force-kills all running `node.exe` processes).
 
