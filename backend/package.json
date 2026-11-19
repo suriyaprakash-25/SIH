@@ -4,11 +4,17 @@
   "description": "Backend API for Metro Induction Planner with multi-source data ingestion",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node init && node server.js",
+    "dev": "node init && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["metro", "train", "planning", "induction", "api"],
+  "keywords": [
+    "metro",
+    "train",
+    "planning",
+    "induction",
+    "api"
+  ],
   "author": "Metro Induction Planner Team",
   "license": "MIT",
   "dependencies": {
