@@ -483,7 +483,7 @@ async function setupFirestore() {
   });
   
   console.log('\n🚀 Next Steps:');
-  console.log('1. Deploy Firestore rules: firebase deploy --only firestore:rules');
+  console.log('1. Deploy Firestore rules: npm run deploy-rules');
   console.log('2. Test your application with the created credentials');
   console.log('3. Access your app at: http://localhost:3000');
   

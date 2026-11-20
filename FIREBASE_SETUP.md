@@ -20,7 +20,7 @@
 
 ### **Step 2: Login to Firebase CLI**
 ```bash
-firebase login
+npx firebase-tools@15 login
 ```
 This will open your browser to authenticate.
 
@@ -31,7 +31,7 @@ node setup-firestore.js
 
 ### **Step 4: Deploy Firestore Rules**
 ```bash
-firebase deploy --only firestore:rules
+npx firebase-tools@15 deploy --only firestore:rules
 ```
 
 ## 📊 **What Gets Created:**
@@ -79,7 +79,7 @@ maintenance@kmrl.com / maintenance123 (Cleaning & Maintenance)
 - Place it in the root directory (`D:\SIH 2\`)
 
 ### **Error: Permission denied**
-- Run `firebase login` first
+- Run `npx firebase-tools@15 login` first
 - Ensure you have admin access to the Firebase project
 
 ### **Error: Project not found**
